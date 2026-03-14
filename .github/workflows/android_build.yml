@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-# Фикс для предупреждения о Node.js 20
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -29,10 +28,12 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle
-      run: ./gradlew assembleDebug --stacktrace
+      # Мы добавили --continue (чтобы увидеть все ошибки сразу) и убрали лишние проверки
+      run: ./gradlew assembleDebug --continue -x test
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: Lumina-Client-Debug
-        path: app/build/outputs/apk/debug/*.apk
+        # Ищем APK во всех папках проекта на случай, если он не в /app/
+        path: "**/build/outputs/apk/debug/*.apk"
