@@ -27,13 +27,20 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    # ЭТОТ ШАГ ВАЖЕН: обманываем Google Services
+    - name: Create dummy google-services.json
+      run: |
+        mkdir -p app/
+        echo '{"project_info":{"project_number":"0","project_id":"dummy","storage_bucket":"dummy"},"client":[{"client_info":{"mobilesdk_app_id":"0","android_client_info":{"package_name":"com.lumina.client"}},"api_key":[{"current_key":"dummy"}]}]}' > app/google-services.json
+
     - name: Build with Gradle
-      # Мы добавили --continue (чтобы увидеть все ошибки сразу) и убрали лишние проверки
+      # Используем assembleDebug, чтобы получить APK
       run: ./gradlew assembleDebug --continue -x test
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: Lumina-Client-Debug
-        # Ищем APK во всех папках проекта на случай, если он не в /app/
+        # Ищем любой APK во всем проекте
         path: "**/build/outputs/apk/debug/*.apk"
+      
