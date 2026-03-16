@@ -619,8 +619,8 @@ private fun ServerListSection(
     val captureModeModel by mainScreenViewModel.captureModeModel.collectAsState()
 
     val rawServers = listOf(
-        Triple("2b2tpe", "2b2tpe.org", 19132),
-        Triple("Sega MC", "segamc.net", 19132),
+        Triple("Nevertime", "mc.nevertime.su", 19132),
+        Triple("Phoenix", "phoenix-pe.ru", 19132),
         Triple("The Hive", "geo.hivebedrock.network", 19132),
         Triple("Lifeboat MC", "play.lbsg.net", 19132),
         Triple("Nether Games", "ap.nethergames.org", 19132),

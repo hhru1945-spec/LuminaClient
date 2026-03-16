@@ -240,7 +240,7 @@ private fun RpcActivityPreview() {
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                text = "Lumina Client",
+                text = "Zephyr Client",
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp
