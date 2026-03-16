@@ -140,7 +140,7 @@ fun MinecraftNotFoundScreen(onGetMinecraftClick: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
         
         Text(
-            text = "Lumina requires Minecraft to be installed on your device. Please install Minecraft before using this application.",
+            text = "Zephyr requires Minecraft to be installed on your device. Please install Minecraft before using this application.",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )

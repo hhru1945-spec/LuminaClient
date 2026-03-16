@@ -51,14 +51,28 @@ Java_com_project_lumina_relay_LuminaRelay_getNativeDefaultPort(JNIEnv* env, jcla
     return 19132;
 }
 
+// Эти переменные будут хранить то, что ты выбрал в меню
+static std::string current_target_ip = "mc.nevertime.su"; 
+static int current_target_port = 19132;
+
+// Новая функция, которую мы будем вызывать из Kotlin
+extern "C" JNIEXPORT void JNICALL
+Java_com_project_lumina_relay_LuminaRelay_setNativeTarget(JNIEnv* env, jclass clazz, jstring ip, jint port) {
+    const char* ip_chars = env->GetStringUTFChars(ip, nullptr);
+    current_target_ip = ip_chars;
+    current_target_port = port;
+    env->ReleaseStringUTFChars(ip, ip_chars);
+}
+
+// Теперь эти функции возвращают не "Hive", а то, что лежит в переменных
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_project_lumina_relay_LuminaRelay_getNativeRemoteIp(JNIEnv* env, jclass clazz) {
-    return createJavaString(env, "geo.hivebedrock.network");
+    return env->NewStringUTF(current_target_ip.c_str());
 }
 
 extern "C" JNIEXPORT jint JNICALL
 Java_com_project_lumina_relay_LuminaRelay_getNativeRemotePort(JNIEnv* env, jclass clazz) {
-    return 19132;
+    return current_target_port;
 }
 
 extern "C" JNIEXPORT jobject JNICALL
@@ -100,10 +114,10 @@ Java_com_project_lumina_relay_LuminaRelay_createNativeAdvertisement(JNIEnv* env,
     env->CallObjectMethod(pongObj, setGameType, createJavaString(env, "Survival"));
     env->CallObjectMethod(pongObj, setVersion, createJavaString(env, "1.21.130"));
     env->CallObjectMethod(pongObj, setProtocolVersion, 898);
-    env->CallObjectMethod(pongObj, setMotd, createJavaString(env, "§bWelcome To Lunaris§b"));
+    env->CallObjectMethod(pongObj, setMotd, createJavaString(env, "Welcome To Zephyr"));
     env->CallObjectMethod(pongObj, setPlayerCount, 0);
     env->CallObjectMethod(pongObj, setMaxPlayerCount, 20);
-    env->CallObjectMethod(pongObj, setSubMotd, createJavaString(env, "Lumina Client"));
+    env->CallObjectMethod(pongObj, setSubMotd, createJavaString(env, "Zephyr Client"));
     env->CallObjectMethod(pongObj, setNintendoLimited, JNI_FALSE);
     env->DeleteLocalRef(pongClass);
 

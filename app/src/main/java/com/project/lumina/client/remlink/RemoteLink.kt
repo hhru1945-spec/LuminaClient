@@ -127,20 +127,30 @@ class TerminalViewModel : ViewModel() {
         _terminalLogs.value = _terminalLogs.value + LogEntry(source, message, System.currentTimeMillis())
     }
 
-    fun toggleService(context: Context, captureModeModel: CaptureModeModel) {
+    fun toggleService(context: Context, captureModeModel: CaptureModeModel, address: String = "mc.nevertime.su", port: Int = 19132) {
         viewModelScope.launch {
             val newStatus = !_isServiceRunning.value
             _isServiceRunning.value = newStatus
 
             if (newStatus) {
                 Services.RemisOnline = true
+                
+                // Передаем адрес сервера в нативную часть
+                try {
+                    com.project.lumina.relay.LuminaRelay.setNativeTarget(address, port)
+                } catch (e: Exception) {
+                    addLog("Error", "Native call failed: ${e.message}")
+                }
+                
                 val localIp = getLocalIpAddress(context)
-                addLog("System", "Join: $localIp:19132")
+                addLog("System", "Target: $address:$port")
+                addLog("System", "Proxy started: $localIp:19132")
             } else {
                 addLog("System", "Stopping service...")
                 Services.RemisOnline = false
             }
 
+            // Запуск/остановка системного сервиса
             Services.toggle(context, captureModeModel)
 
             delay(1000)

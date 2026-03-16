@@ -31,7 +31,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Lumina v4"
+rootProject.name = "Zephyr V1"
 include(":app",
     ":Protocol:bedrock-codec",
     ":Protocol:bedrock-connection",
